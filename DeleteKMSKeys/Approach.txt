@@ -1,0 +1,28 @@
+Problem Statement :
+
+Context:
+ScheduleKeyDeletion can not be set when you create a KMS key from console or from CLI and can be done only  after the 
+key is created since ScheduleKeyDeletion takes KMS key id as paramter
+
+Problem:
+1. How to put keys in pending deletion(mark for deletion which is ScheduleKeyDeletion) after say X days from the creation date.
+2. There could be thousands such keys and cant be deleted manually
+
+
+
+=================
+Create-Keys.py
+=================
+This creates dummy keys with default KMS policy (that delegates access to the account to peform operations on it) and adds a tag key-value "Delete:3days"
+
+
+===================
+Schedule-AllKeys.py
+===================
+
+1. This will scan all the KMS keys in your account for a particular region, will check for the specific tag key-value (Delete:3days) and if the right tag is present it will then measure if (current date time - creation of key time) >X days. 
+If yes, it will mark the key for deletion and will move on to the next.
+2. The script once executed also prints a summary of  total keys processed, how many skipped (AWS Managed, not older than 3 days, don’t have the right tag) in the end for you to verify the results
+3. The scripts skips in case it faces any error when processing a key (invalid state, access denied for not enough permission etc)
+
+
