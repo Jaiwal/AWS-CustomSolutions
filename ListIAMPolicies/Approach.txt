@@ -1,0 +1,30 @@
+Problem Statement :
+
+Context:
+There are times when AWS makes changes to services or when there has been some issue with the services or some update then a notification is shared with AWS customer letting them know their affected resources
+which needs attention or updation where cx are provided with affected resources.
+
+Sept 2024, AWS has asked cutomers to update all of their IAM policies where action ssm:StartSession was specified, the update asks to include "...document/SSM-SessionManagerRunShell" in the resource section which
+are now required to start interactive shell sessions.  
+
+=========
+Problem:
+=========
+AWS not always provide every affected resource but only sample therefore its overwhelming to list down all polcicies containing this action and not the resource section which is asked.
+
+============
+Solution
+============
+Scans all your IAM users and checks for each type of policy i.e customer managed, inline policy and check for action "ssm:StartSession”. 
+
+=================
+Policies_with_actions.py
+=================
+List down all policies with "ssm:StartSession" action present in it
+
+===================
+Policies_with_action_not_met_condition.py
+===================
+
+List down all policies with "ssm:StartSession" present in it but no resource containing the string “SSM-SessionManagerRunShell”. 
+
