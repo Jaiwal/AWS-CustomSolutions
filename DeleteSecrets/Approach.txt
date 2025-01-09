@@ -1,0 +1,18 @@
+Context:
+When you delete secret from AWS console then it has a minimum time window for which the secret is marked for deletion and only post that service will delete the secret. To immediately
+delete a secret, we need to use CLI/SDK where we can pass ForceDeleteWithoutRecovery as true which immediately deletes a secret.
+from DOC: https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/delete-secret.html
+Warning: 
+Use this parameter with caution. This parameter causes the operation to skip the normal recovery window before the permanent deletion that Secrets Manager would normally impose with the RecoveryWindowInDays parameter. If you delete a secret with the ForceDeleteWithoutRecovery parameter, then you have no opportunity to recover the secret. You lose the secret permanently.
+
+
+Problem Statement :
+The issue arises when you delete the secret with this flag but in case you again call the api on same secret it does not return resource not found exception as it would without the flag but instead it 
+returns 200ok status which can be misleading
+
+===================
+delete_secret.py
+===================
+
+Before calling delete secret check if the secret exist using describe secret API that way you can always edit your logic to handle when secret does not exist.
+
